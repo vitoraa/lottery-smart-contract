@@ -75,6 +75,7 @@ describe('Lottery Contract', () => {
 
     const players = await lottery.methods.getPlayers().call();
     assert.equal(players.length, 0);
+    
     const contractBalance = await web3.eth.getBalance(lottery.options.address);
     assert.equal(contractBalance, 0);
   });
