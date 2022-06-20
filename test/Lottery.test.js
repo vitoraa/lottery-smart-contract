@@ -24,7 +24,10 @@ describe('Lottery Contract', () => {
   });
 
   it('can enter', async () => {
-    await lottery.methods.enter().send({ from: accounts[0], value: web3.utils.toWei('0.1', 'ether') });
+    await lottery.methods.enter().send({ 
+      from: accounts[0], 
+      value: web3.utils.toWei('0.011', 'ether') 
+    });
     const players = await lottery.methods.getPlayers().call();
     assert.equal(players.length, 1);
     assert.equal(players[0], accounts[0]);
