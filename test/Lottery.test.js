@@ -8,6 +8,13 @@ const { abi, evm } = require('../compile');
 let lottery;
 let accounts;
 
+const enter = (account, amount) => {
+  return lottery.methods.enter().send({
+    from: account,
+    value: amount
+  });
+};
+
 beforeEach(async () => {
   // Get a list of all accounts
   accounts = await web3.eth.getAccounts();
@@ -24,12 +31,19 @@ describe('Lottery Contract', () => {
   });
 
   it('allows one account to enter', async () => {
-    await lottery.methods.enter().send({ 
-      from: accounts[0], 
-      value: web3.utils.toWei('0.011', 'ether') 
-    });
+    await enter(accounts[0], web3.utils.toWei('0.011', 'ether'));
     const players = await lottery.methods.getPlayers().call();
     assert.equal(players.length, 1);
     assert.equal(players[0], accounts[0]);
+  });
+
+  it('allows multiple accounts to enter', async () => {
+    await enter(accounts[0], web3.utils.toWei('0.011', 'ether'));
+    await enter(accounts[1], web3.utils.toWei('0.011', 'ether'));
+
+    const players = await lottery.methods.getPlayers().call();
+    assert.equal(players.length, 2);
+    assert.equal(players[0], accounts[0]);
+    assert.equal(players[1], accounts[1]);
   });
 });
