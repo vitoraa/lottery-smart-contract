@@ -6,12 +6,12 @@ const web3 = new Web3(ganache.provider());
 const { abi, evm } = require('../compile');
  
 let accounts;
-let inbox;
+let lottery;
  
 beforeEach(async () => {
   // Get a list of all accounts
   accounts = await web3.eth.getAccounts();
-  inbox = await new web3.eth.Contract(abi)
+  lottery = await new web3.eth.Contract(abi)
     .deploy({
       data: evm.bytecode.object,
       arguments: ['Hi there!'],
